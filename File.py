@@ -10,6 +10,7 @@ class File:
         self.words_weight_coef = {}
         self.words_weight = {}
         self.eq_rate = 0
+        self.words_from_search = []
 
     def calculate_words_count(self) -> None:
         with open(self.path, 'r') as file:

@@ -46,6 +46,7 @@ def eq_rating(files: list, search: str):
     calculate_files_words_weight(files)
     search_list = set(search.lower().split())
     for file in files:
+        file.words_from_search = [word for word in file.words_weight.keys() if word in search_list]
         numerator = sum([file.words_weight[word] for word in file.words_weight.keys() if word in search_list])
         denominator = math.sqrt(sum([file.words_weight[word] ** 2 for word in file.words_weight.keys()])) * \
                       math.sqrt(sum([1 for word in search_list]))
@@ -56,15 +57,7 @@ def sort_key(file):
     return file.eq_rate
 
 
-def main():
-    files = get_files_list(get_folders_content('./test'))
-    search = input('String to search: ').lower().strip()
+def main(path: str, search: str):
+    files = get_files_list(get_folders_content(path))
     eq_rating(files, search)
-    for file in sorted(files, key=sort_key, reverse=True):
-        if file.eq_rate == 0:
-            break
-        print(f'file path: {file.path}\nrating: {file.eq_rate}')
-
-
-if __name__ == '__main__':
-    main()
+    return sorted(files, key=sort_key, reverse=True)
