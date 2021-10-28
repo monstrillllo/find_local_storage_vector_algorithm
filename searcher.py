@@ -3,15 +3,13 @@ import os
 from File import File
 
 
-def get_folders_content(path: str) -> list:
+def get_folders_content() -> list:
     files_path_list = []
 
-    for path, _, filenames in os.walk(path):
+    for path, _, filenames in os.walk('share'):
         for file in filenames:
             if file.endswith('.txt'):
-                if not path.endswith('/'):
-                    path += '/'
-                files_path_list.append(path + file)
+                files_path_list.append(os.path.join(path, file))
 
     return files_path_list
 
@@ -58,6 +56,6 @@ def sort_key(file):
 
 
 def main(path: str, search: str):
-    files = get_files_list(get_folders_content(path))
+    files = get_files_list(get_folders_content())
     eq_rating(files, search)
     return sorted(files, key=sort_key, reverse=True)
