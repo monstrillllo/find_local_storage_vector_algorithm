@@ -14,20 +14,7 @@
    <string>Search</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTextEdit" name="textEdit_folder">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>25</y>
-      <width>651</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="statusTip">
-     <string>Folder path field</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_folder">
+   <widget class="QLabel" name="label_ip">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -37,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Folder path</string>
+     <string>Select pc ip</string>
     </property>
    </widget>
    <widget class="QTextEdit" name="textEdit_search">
@@ -100,6 +87,42 @@
     <property name="icon">
      <iconset>
       <normaloff>search_icon.png</normaloff>search_icon.png</iconset>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_ip">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>30</y>
+      <width>590</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="editable">
+     <bool>false</bool>
+    </property>
+    <property name="maxVisibleItems">
+     <number>100</number>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_add_ip">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>30</y>
+      <width>25</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>plus.png</normaloff>plus.png</iconset>
     </property>
    </widget>
   </widget>
