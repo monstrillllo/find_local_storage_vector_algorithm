@@ -24,7 +24,10 @@ class File:
 
     def calculate_words_weight_coef(self, files_word_count: dict, files_count: int) -> None:
         for word in files_word_count.keys():
-            self.words_weight_coef[word] = self.words_count[word] * math.log(files_count/files_word_count[word])
+            if files_word_count[word] == 1 and files_count == 1:
+                self.words_weight_coef[word] = 1
+            else:
+                self.words_weight_coef[word] = self.words_count[word] * math.log(files_count/files_word_count[word])
 
     def calculate_words_weight(self, files_weight_coef_list: list) -> None:
         coef_sum = {}

@@ -6,7 +6,7 @@ from File import File
 def get_folders_content() -> list:
     files_path_list = []
 
-    for path, _, filenames in os.walk('share'):
+    for path, _, filenames in os.walk('share2'):
         for file in filenames:
             if file.endswith('.txt'):
                 files_path_list.append(os.path.join(path, file))

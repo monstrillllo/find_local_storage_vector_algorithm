@@ -14,6 +14,8 @@ class SearchWindow(QtWidgets.QMainWindow, mainWindow.Ui_MainWindow):
         self.actionhelp.triggered.connect(self.help_clicked)
 
     def btn_search_clicked(self):
+        if not self.textEdit_search.toPlainText():
+            return
         self.folder_path = self.textEdit_folder.toPlainText().strip().lower()
         self.search_string = self.textEdit_search.toPlainText().strip().lower()
         result = searcher.main(self.folder_path, self.search_string)
