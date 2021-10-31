@@ -60,30 +60,25 @@ def sort_key(file):
 
 def start_socket():
     sock = socket.socket()
-    sock.bind(('', 9099))
+    sock.bind(('', 9090))
     sock.listen(5)
     conn, addr = sock.accept()
-    print(f'Connected: {addr}')
-    search_size = 0
     while True:
-        if search_size == 0:
-            size_recv = conn.recv(8)
-            if size_recv:
-                search_size = int.from_bytes(size_recv, 'little')
-                print(search_size)
-        else:
-            search = conn.recv(search_size)
-            if search:
-                files = get_files_list(get_folders_content())
-                eq_rating(files, search.decode(encoding='utf-8'))
-                result = [[file.path, file.eq_rate] for file in sorted(files, key=sort_key, reverse=True)]
-                size = sys.getsizeof(np.array(result))
-                size_bytes = size.to_bytes(2, 'little')
-                conn.send(size_bytes)
-                conn.send(np.array(result).tobytes())
-                print(np.array(result))
-            search_size = 0
-            # break
+        print('*')
+        size_recv = conn.recv(8)
+        print(size_recv)
+        if not size_recv:
+            continue
+        search_size = int.from_bytes(size_recv, 'big')
+        search_string = conn.recv(search_size).decode(encoding='utf-8')
+        files = get_files_list(get_folders_content())
+        eq_rating(files, search_string)
+        result = [[file.path, file.eq_rate] for file in sorted(files, key=sort_key, reverse=True)]
+        result = np.array(result)
+        result_size = sys.getsizeof(result)
+        result_size_bytes = result_size.to_bytes(2, byteorder='big')
+        conn.send(result_size_bytes)
+        conn.send(result.tobytes())
 
 
 def main():

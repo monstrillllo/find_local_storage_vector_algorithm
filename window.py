@@ -15,25 +15,39 @@ class SearchWindow(QtWidgets.QMainWindow, mainWindow.Ui_MainWindow):
         self.btn_search.clicked.connect(self.btn_search_clicked)
         with open('./local_ips.json') as file:
             self.comboBox_ip.addItems(json.load(file).get('ips'))
+        self.comboBox_ip.currentIndexChanged.connect(self.item_changed)
         self.folder_path = ''
         self.search_string = ''
         self.actionhelp.triggered.connect(self.help_clicked)
         self.btn_add_ip.clicked.connect(self.add_clicked)
+        self.host = 'localhost'
+        self.sock = socket.socket()
+        self.sock.connect((self.host, 9090))
+
+    def item_changed(self, i):
+        if self.comboBox_ip.currentText():
+            self.host = self.comboBox_ip.currentText()
+            try:
+                self.sock.close()
+                self.sock.connect((self.host, 9090))
+                self.plainTextEdit_result.insertPlainText(f'connected to: {self.comboBox_ip.currentText()}\n*****\n')
+            except Exception as e:
+                self.plainTextEdit_result.insertPlainText(f'cant connect to: {self.comboBox_ip.currentText()}\n*****\n')
+                print(e)
 
     def btn_search_clicked(self):
         try:
-            sock = socket.socket()
-            sock.connect((self.comboBox_ip.currentText(), 9099))
+            # self.sock.connect((self.comboBox_ip.currentText(), 9090))
             search_str = self.textEdit_search.toPlainText()
             size = sys.getsizeof(search_str)
             print(size)
-            size_bytes = bytes([size])
-            sock.send(size_bytes)
-            sock.send(bytes(search_str, 'utf-8'))
-            size = int.from_bytes(sock.recv(8), 'little')
-            data = sock.recv(size)
+            size_bytes = size.to_bytes(2, byteorder='big')
+            self.sock.send(size_bytes)
+            self.sock.send(bytes(search_str, 'utf-8'))
+            size = int.from_bytes(self.sock.recv(8), 'big')
+            data = self.sock.recv(size)
             print(data.decode(encoding='utf-8'))
-            sock.close()
+            self.sock.close()
         except Exception as e:
             self.plainTextEdit_result.insertPlainText(f'cant connect to: {self.comboBox_ip.currentText()}\n*****\n')
             print(e)
