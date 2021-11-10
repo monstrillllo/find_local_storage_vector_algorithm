@@ -6,14 +6,13 @@ from File import File
 import socket
 
 
-def get_folders_content() -> list:
+def get_folders_content(path: str) -> list:
     files_path_list = []
 
-    for path, _, filenames in os.walk('share'):
+    for path, _, filenames in os.walk(path):
         for file in filenames:
             if file.endswith('.txt'):
                 files_path_list.append(os.path.join(path, file))
-
     return files_path_list
 
 
@@ -63,10 +62,11 @@ def start_socket():
     sock.bind(('', 9090))
     sock.listen(5)
     conn, addr = sock.accept()
+    print(f'connected: {addr}')
     while True:
-        print('*')
+        # print('*')
         size_recv = conn.recv(8)
-        print(size_recv)
+        # print(size_recv)
         if not size_recv:
             continue
         search_size = int.from_bytes(size_recv, 'big')
@@ -82,7 +82,12 @@ def start_socket():
 
 
 def main():
-    start_socket()
+    # start_socket()
+    files = get_files_list(get_folders_content('/home/monstrillllo/EYAZIS/share'))
+    eq_rating(files, 'sex')
+    files.sort(key=sort_key, reverse=True)
+    for file in files:
+        print(f'{file.path} - {file.eq_rate}')
 
 
 if __name__ == '__main__':
