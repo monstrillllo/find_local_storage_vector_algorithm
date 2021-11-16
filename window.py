@@ -10,7 +10,7 @@ class SearchWindow(QtWidgets.QMainWindow, mainWindow.Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.btn_search.clicked.connect(self.btn_search_clicked)
-        self.btn_choose_folder.clicked.connect(self.openFileNameDialog)
+        self.btn_choose_folder.clicked.connect(self.open_file_name_dialog)
         self.folder_path = ''
         self.search_string = ''
         self.actionhelp.triggered.connect(self.help_clicked)
@@ -32,7 +32,7 @@ class SearchWindow(QtWidgets.QMainWindow, mainWindow.Ui_MainWindow):
         dial = Help(self)
         dial.show()
 
-    def openFileNameDialog(self):
+    def open_file_name_dialog(self):
         self.folder_path = QFileDialog.getExistingDirectory(self)
 
 
