@@ -1,19 +1,15 @@
 import math
 import os
-import sys
-import numpy as np
 from File import File
-import socket
 
 
-def get_folders_content() -> list:
+def get_folders_content(path: str) -> list:
     files_path_list = []
 
-    for path, _, filenames in os.walk('share'):
+    for path, _, filenames in os.walk(path):
         for file in filenames:
             if file.endswith('.txt'):
                 files_path_list.append(os.path.join(path, file))
-
     return files_path_list
 
 
@@ -49,40 +45,21 @@ def eq_rating(files: list, search: str):
     for file in files:
         file.words_from_search = [word for word in file.words_weight.keys() if word in search_list]
         numerator = sum([file.words_weight[word] for word in file.words_weight.keys() if word in search_list])
-        denominator = math.sqrt(sum([file.words_weight[word] ** 2 for word in file.words_weight.keys()])) * \
-                      math.sqrt(sum([1 for word in search_list]))
-        file.set_eq_rate(numerator/denominator)
+        denominator = math.sqrt(sum([file.words_weight[word] ** 2 for word in file.words_weight.keys()])) * math.sqrt(
+            sum([1 for _ in search_list]))
+        file.set_eq_rate(numerator / denominator)
 
 
 def sort_key(file):
     return file.eq_rate
 
 
-def start_socket():
-    sock = socket.socket()
-    sock.bind(('', 9090))
-    sock.listen(5)
-    conn, addr = sock.accept()
-    while True:
-        print('*')
-        size_recv = conn.recv(8)
-        print(size_recv)
-        if not size_recv:
-            continue
-        search_size = int.from_bytes(size_recv, 'big')
-        search_string = conn.recv(search_size).decode(encoding='utf-8')
-        files = get_files_list(get_folders_content())
-        eq_rating(files, search_string)
-        result = [[file.path, file.eq_rate] for file in sorted(files, key=sort_key, reverse=True)]
-        result = np.array(result)
-        result_size = sys.getsizeof(result)
-        result_size_bytes = result_size.to_bytes(2, byteorder='big')
-        conn.send(result_size_bytes)
-        conn.send(result.tobytes())
-
-
 def main():
-    start_socket()
+    files = get_files_list(get_folders_content('/home/monstrillllo/EYAZIS/share'))
+    eq_rating(files, 'sex')
+    files.sort(key=sort_key, reverse=True)
+    for file in files:
+        print(f'{file.path} - {file.eq_rate}')
 
 
 if __name__ == '__main__':
