@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'gui.ui'
+# Form implementation generated from reading ui file 'ui_files/gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -53,7 +53,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.actionhelp = QtWidgets.QAction(MainWindow)
         self.actionhelp.setObjectName("actionhelp")
+        self.actionmetrix = QtWidgets.QAction(MainWindow)
+        self.actionmetrix.setObjectName("actionmetrix")
         self.menuhelp.addAction(self.actionhelp)
+        self.menuhelp.addAction(self.actionmetrix)
         self.menubar.addAction(self.menuhelp.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -70,3 +73,5 @@ class Ui_MainWindow(object):
         self.actionhelp.setText(_translate("MainWindow", "help"))
         self.actionhelp.setStatusTip(_translate("MainWindow", "Show help menu"))
         self.actionhelp.setShortcut(_translate("MainWindow", "Ctrl+H"))
+        self.actionmetrix.setText(_translate("MainWindow", "metrix"))
+        self.actionmetrix.setShortcut(_translate("MainWindow", "Ctrl+M"))

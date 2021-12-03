@@ -14,6 +14,7 @@ class SearchWindow(QtWidgets.QMainWindow, mainWindow.Ui_MainWindow):
         self.folder_path = ''
         self.search_string = ''
         self.actionhelp.triggered.connect(self.help_clicked)
+        self.actionmetrix.triggered.connect()
 
     def btn_search_clicked(self):
         self.search_string = self.textEdit_search.toPlainText()

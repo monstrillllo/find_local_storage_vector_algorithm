@@ -108,6 +108,7 @@
      <string>menu</string>
     </property>
     <addaction name="actionhelp"/>
+    <addaction name="actionmetrix"/>
    </widget>
    <addaction name="menuhelp"/>
   </widget>
@@ -121,6 +122,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="actionmetrix">
+   <property name="text">
+    <string>metrix</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
    </property>
   </action>
  </widget>
